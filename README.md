@@ -365,6 +365,8 @@ public abstract class FormaGeometrica {
 
 # tela 
 
+![telaanimal](https://github.com/user-attachments/assets/d55ded26-5058-439e-832c-af44fb771602)
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
