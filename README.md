@@ -1,5 +1,7 @@
 # exerciciosDTOVieweDAO
 
+# Exercício 1: Formas Geométricas Abstratas
+
 # a tela 
 
 ![telacalculogeometrico](https://github.com/user-attachments/assets/b713a14a-3f21-4274-aab5-3258423de4b7)
@@ -189,3 +191,173 @@ public class FormaView extends javax.swing.JFrame {
     private javax.swing.JPanel painel;
     // End of variables declaration                   
 }
+
+# class circulo
+
+public class CirculoDTO extends FormaGeometrica {
+    private double raio;
+
+    public CirculoDTO (double raio) {
+        this.raio = raio;
+    }
+
+    public double getRaio() {
+        return raio;
+    }
+
+    public void setRaio(double raio) {
+        this.raio = raio;
+    }
+    
+
+    @Override
+    public double calcularArea() {
+        return Math.PI * raio * raio;
+    }
+}
+
+# class triangulo
+
+
+
+/**
+ *
+ * @author DOUGLAS VIEIRA
+ */
+public class TrianguloDTO extends FormaGeometrica {
+    private double base;
+    private double altura;
+
+    public TrianguloDTO (double base, double altura) {
+        this.base = base;
+        this.altura = altura;
+    }
+
+    public void setBase(double base) {
+        this.base = base;
+    }
+
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }
+
+    public double getBase() {
+        return base;
+    }
+
+    public double getAltura() {
+        return altura;
+    }
+
+    @Override
+    public double calcularArea() {
+        return (base * altura) / 2;
+    }
+}
+
+# class retangulo 
+
+
+
+/**
+ *
+ * @author DOUGLAS VIEIRA
+ */
+public class RetanguloDTO extends FormaGeometrica {
+    private double largura;
+    private double altura;
+
+    public RetanguloDTO (double largura, double altura) {
+        this.largura = largura;
+        this.altura = altura;
+    }
+
+    public double getLargura() {
+        return largura;
+    }
+
+    public double getAltura() {
+        return altura;
+    }
+
+    public void setLargura(double largura) {
+        this.largura = largura;
+    }
+
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }
+    
+
+    @Override
+    public double calcularArea() {
+        return largura * altura;
+    }
+}
+
+# class forma controller 
+
+
+import java.util.List;
+
+
+
+/**
+ *
+ * @author Joel
+ */
+public class FormaController {
+    private FormaDAO formaDAO;
+
+    public FormaController() {
+        formaDAO = new FormaDAO();
+    }
+
+    public void adicionarForma(FormaGeometrica forma) {
+        formaDAO.salvarForma(forma);
+    }
+
+    public List<FormaGeometrica> listarFormas() {
+        return formaDAO.listarFormas();
+    }
+}
+
+# class forma DAO 
+
+
+
+
+/**
+ *
+ * @author DOUGLAS VIEIRA 
+ */
+import java.util.ArrayList;
+import java.util.List;
+
+public class FormaDAO {
+    private List<FormaGeometrica> formas = new ArrayList<>();
+
+    public void salvarForma(FormaGeometrica forma) {
+        formas.add(forma);
+    }
+
+    public List<FormaGeometrica> listarFormas() {
+        return formas;
+    }
+}
+
+# CLASS FORMAGEOMETRICA 
+
+
+
+/**
+ *
+ * @author DOUGLAS VIEIRA
+ */
+public abstract class FormaGeometrica {
+    
+     public abstract double calcularArea();
+    
+    
+}
+
