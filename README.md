@@ -946,5 +946,93 @@ public abstract class ContaBancariaDTO {
 }
 
 
+# exercicio 4 
+
+# CODIGO DA TELA 
+
+package View;
+
+import DAO.PagamentoDAO;
+import DTO.PagamentoDTO;
+import DTO.PagamentoCartaoCreditoDTO;
+import DTO.PagamentoBoletoDTO;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PagamentoView extends JFrame {
+    private JComboBox<String> pagamentoComboBox;
+    private JTextField valorBaseField;
+    private JButton calcularButton;
+
+    private PagamentoDAO pagamentoDAO;
+
+    public PagamentoView(PagamentoDAO pagamentoDAO) {
+        this.pagamentoDAO = pagamentoDAO;
+        initUI();
+    }
+
+    private void initUI() {
+        setTitle("Sistema de Pagamento");
+        setSize(400, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        String[] metodosPagamento = {"Cartão de Crédito", "Boleto"};
+        pagamentoComboBox = new JComboBox<>(metodosPagamento);
+        valorBaseField = new JTextField(10);
+
+        calcularButton = new JButton("Calcular Pagamento");
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Método de Pagamento:"));
+        panel.add(pagamentoComboBox);
+        panel.add(new JLabel("Valor Base:"));
+        panel.add(valorBaseField);
+        panel.add(calcularButton);
+
+        add(panel);
+
+        calcularButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularPagamento();
+            }
+        });
+    }
+
+    private void calcularPagamento() {
+        String tipoPagamento = (String) pagamentoComboBox.getSelectedItem();
+        double valorBase = Double.parseDouble(valorBaseField.getText());
+
+        PagamentoDTO pagamento = null;
+        switch (tipoPagamento) {
+            case "Cartão de Crédito":
+                double taxaJuros = Double.parseDouble(JOptionPane.showInputDialog("Informe a taxa de juros (%):"));
+                pagamento = new PagamentoCartaoCreditoDTO(valorBase, taxaJuros);
+                break;
+            case "Boleto":
+                double taxaBoleto = Double.parseDouble(JOptionPane.showInputDialog("Informe a taxa do boleto:"));
+                pagamento = new PagamentoBoletoDTO(valorBase, taxaBoleto);
+                break;
+        }
+
+        if (pagamento != null) {
+            pagamentoDAO.adicionarPagamento(pagamento);
+            JOptionPane.showMessageDialog(this, "Valor calculado: " + pagamento.calcularValor());
+        }
+    }
+
+    public static void main(String[] args) {
+        PagamentoDAO pagamentoDAO = new PagamentoDAO();
+        PagamentoView view = new PagamentoView(pagamentoDAO);
+        view.setVisible(true);
+    }
+}
+
+
+
+
 
 
