@@ -1033,6 +1033,91 @@ public class PagamentoView extends JFrame {
 
 
 
+# TELA 
+
+![telapagamento](https://github.com/user-attachments/assets/2ef1a264-526b-4662-a6c7-0a175aa4614a)
+
+# PAGAMENTODAO
+
+package DAO;
+
+import DTO.PagamentoDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PagamentoDAO {
+    private List<PagamentoDTO> pagamentos = new ArrayList<>();
+
+    public void adicionarPagamento(PagamentoDTO pagamento) {
+        pagamentos.add(pagamento);
+    }
+
+    public List<PagamentoDTO> getPagamentos() {
+        return pagamentos;
+    }
+}
+
+
+# PagamentoBoletoDTO 
+
+package DTO;
+
+public class PagamentoBoletoDTO extends PagamentoDTO {
+    private double taxa;
+
+    public PagamentoBoletoDTO(double valorBase, double taxa) {
+        super(valorBase);
+        this.taxa = taxa;
+    }
+
+    @Override
+    public double calcularValor() {
+        return valorBase + taxa;
+    }
+}
+
+
+# PagamentoCartaoCreditoDTO
+
+package DTO;
+
+public class PagamentoCartaoCreditoDTO extends PagamentoDTO {
+    private double taxaJuros;
+
+    public PagamentoCartaoCreditoDTO(double valorBase, double taxaJuros) {
+        super(valorBase);
+        this.taxaJuros = taxaJuros;
+    }
+
+    @Override
+    public double calcularValor() {
+        return valorBase + (valorBase * taxaJuros / 100);
+    }
+}
+
+
+# PagamentoDTO
+
+package DTO;
+
+public abstract class PagamentoDTO {
+    protected double valorBase;
+
+    public PagamentoDTO(double valorBase) {
+        this.valorBase = valorBase;
+    }
+
+    public abstract double calcularValor();
+}
+
+
+# Exercício 5 
+
+
+
+
+
+
 
 
 
