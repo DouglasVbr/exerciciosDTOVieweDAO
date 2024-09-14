@@ -1196,6 +1196,88 @@ public class FuncionarioView extends JFrame {
     }
 }
 
+# tela 
+
+![funcionario](https://github.com/user-attachments/assets/ac925c2f-4323-45bd-a337-28908aca8946)
+
+
+# FuncionarioDAO
+
+package DAO;
+
+import DTO.FuncionarioDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FuncionarioDAO {
+    private List<FuncionarioDTO> funcionarios = new ArrayList<>();
+
+    public void adicionarFuncionario(FuncionarioDTO funcionario) {
+        funcionarios.add(funcionario);
+    }
+
+    public List<FuncionarioDTO> getFuncionarios() {
+        return funcionarios;
+    }
+}
+
+
+# ProgramadorDTO
+
+package DTO;
+
+public class ProgramadorDTO extends FuncionarioDTO {
+    private double bonus;
+
+    public ProgramadorDTO(double salarioBase, double bonus) {
+        super(salarioBase);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return salarioBase + bonus;
+    }
+}
+
+
+# GerenteDTO 
+
+package DTO;
+
+public class GerenteDTO extends FuncionarioDTO {
+    private double bonus;
+
+    public GerenteDTO(double salarioBase, double bonus) {
+        super(salarioBase);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return salarioBase + bonus;
+    }
+}
+
+
+# FuncionarioDTO
+
+
+package DTO;
+
+public abstract class FuncionarioDTO {
+    protected double salarioBase;
+
+    public FuncionarioDTO(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+
+    public abstract double calcularSalario();
+}
+
+
+
+
 
 
 
