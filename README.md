@@ -841,5 +841,110 @@ public class BancoView extends JFrame {
 
 # tela 
 
+![telaconta](https://github.com/user-attachments/assets/f57451b1-30a3-4c54-bda6-023833dde1ca)
+
+
+package DAO;
+
+import DTO.ContaBancariaDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ContaBancariaDAO {
+    private List<ContaBancariaDTO> contas;
+
+    public ContaBancariaDAO() {
+        contas = new ArrayList<>();
+    }
+
+    public void adicionarConta(ContaBancariaDTO conta) {
+        contas.add(conta);
+    }
+
+    public ContaBancariaDTO buscarConta(String numeroConta) {
+        for (ContaBancariaDTO conta : contas) {
+            if (conta.getNumeroConta().equals(numeroConta)) {
+                return conta;
+            }
+        }
+        return null;
+    }
+}
+
+
+package DTO;
+
+public class ContaPoupancaDTO extends ContaBancariaDTO {
+
+    public ContaPoupancaDTO(String numeroConta, double saldo) {
+        super(numeroConta, saldo);
+    }
+
+    @Override
+    public boolean sacar(double valor) {
+        if (valor <= saldo) {
+            saldo -= valor;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void depositar(double valor) {
+        saldo += valor;
+    }
+}
+
+
+package DTO;
+
+public class ContaCorrenteDTO extends ContaBancariaDTO {
+
+    public ContaCorrenteDTO(String numeroConta, double saldo) {
+        super(numeroConta, saldo);
+    }
+
+    @Override
+    public boolean sacar(double valor) {
+        if (valor <= saldo) {
+            saldo -= valor;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void depositar(double valor) {
+        saldo += valor;
+    }
+}
+
+
+
+package DTO;
+
+public abstract class ContaBancariaDTO {
+    protected String numeroConta;
+    protected double saldo;
+
+    public ContaBancariaDTO(String numeroConta, double saldo) {
+        this.numeroConta = numeroConta;
+        this.saldo = saldo;
+    }
+
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public abstract boolean sacar(double valor);
+
+    public abstract void depositar(double valor);
+}
+
+
 
 
