@@ -1113,6 +1113,92 @@ public abstract class PagamentoDTO {
 
 # Exercício 5 
 
+# codigo da tela
+
+package View;
+
+import DAO.FuncionarioDAO;
+import DTO.FuncionarioDTO;
+import DTO.GerenteDTO;
+import DTO.ProgramadorDTO;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class FuncionarioView extends JFrame {
+    private JComboBox<String> funcionarioComboBox;
+    private JTextField salarioBaseField;
+    private JButton calcularButton;
+
+    private FuncionarioDAO funcionarioDAO;
+
+    public FuncionarioView(FuncionarioDAO funcionarioDAO) {
+        this.funcionarioDAO = funcionarioDAO;
+        initUI();
+    }
+
+    private void initUI() {
+        setTitle("Sistema de Funcionários");
+        setSize(400, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        String[] tiposFuncionario = {"Gerente", "Programador"};
+        funcionarioComboBox = new JComboBox<>(tiposFuncionario);
+        salarioBaseField = new JTextField(10);
+
+        calcularButton = new JButton("Calcular Salário");
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Tipo de Funcionário:"));
+        panel.add(funcionarioComboBox);
+        panel.add(new JLabel("Salário Base:"));
+        panel.add(salarioBaseField);
+        panel.add(calcularButton);
+
+        add(panel);
+
+        calcularButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calcularSalario();
+            }
+        });
+    }
+
+    private void calcularSalario() {
+        String tipoFuncionario = (String) funcionarioComboBox.getSelectedItem();
+        double salarioBase = Double.parseDouble(salarioBaseField.getText());
+
+        FuncionarioDTO funcionario = null;
+        switch (tipoFuncionario) {
+            case "Gerente":
+                double bonusGerente = Double.parseDouble(JOptionPane.showInputDialog("Informe o bônus do gerente:"));
+                funcionario = new GerenteDTO(salarioBase, bonusGerente);
+                break;
+            case "Programador":
+                double bonusProgramador = Double.parseDouble(JOptionPane.showInputDialog("Informe o bônus do programador:"));
+                funcionario = new ProgramadorDTO(salarioBase, bonusProgramador);
+                break;
+        }
+
+        if (funcionario != null) {
+            funcionarioDAO.adicionarFuncionario(funcionario);
+            JOptionPane.showMessageDialog(this, "Salário calculado: " + funcionario.calcularSalario());
+        }
+    }
+
+    public static void main(String[] args) {
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        FuncionarioView view = new FuncionarioView(funcionarioDAO);
+        view.setVisible(true);
+    }
+}
+
+
+
+
 
 
 
