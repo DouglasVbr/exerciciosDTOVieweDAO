@@ -712,5 +712,134 @@ public abstract class AnimalDTO {
     public abstract String mover();
 }
 
+# exercicio 3
+
+# codigo da tela 
+
+package View;
+
+import DAO.ContaBancariaDAO;
+import DTO.ContaBancariaDTO;
+import DTO.ContaCorrenteDTO;
+import DTO.ContaPoupancaDTO;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class BancoView extends JFrame {
+    private ContaBancariaDAO contaDAO;
+    private JComboBox<String> tipoContaComboBox;
+    private JTextField numeroContaField;
+
+    public BancoView(ContaBancariaDAO contaDAO) {
+        this.contaDAO = contaDAO;
+        initComponents();
+    }
+
+    private void initComponents() {
+        setTitle("Banco - Gerenciamento de Contas");
+        setSize(400, 300);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // ComboBox para selecionar tipo de conta
+        String[] tiposConta = {"Conta Corrente", "Conta Poupança"};
+        tipoContaComboBox = new JComboBox<>(tiposConta);
+
+        // TextField para número da conta
+        numeroContaField = new JTextField(10);
+
+        // Botões
+        JButton btnCriarConta = new JButton("Criar Conta");
+        JButton btnSacar = new JButton("Sacar");
+        JButton btnDepositar = new JButton("Depositar");
+
+        // Layout
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Número da Conta:"));
+        panel.add(numeroContaField);
+        panel.add(tipoContaComboBox);
+        panel.add(btnCriarConta);
+        panel.add(btnSacar);
+        panel.add(btnDepositar);
+        add(panel);
+
+        // Ações dos botões
+        btnCriarConta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                criarConta();
+            }
+        });
+
+        btnSacar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                realizarSaque();
+            }
+        });
+
+        btnDepositar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                realizarDeposito();
+            }
+        });
+    }
+
+    private void criarConta() {
+        String numeroConta = numeroContaField.getText();
+        String tipoConta = (String) tipoContaComboBox.getSelectedItem();
+        ContaBancariaDTO conta;
+
+        if (tipoConta.equals("Conta Corrente")) {
+            conta = new ContaCorrenteDTO(numeroConta, 0);
+        } else {
+            conta = new ContaPoupancaDTO(numeroConta, 0);
+        }
+
+        contaDAO.adicionarConta(conta);
+        JOptionPane.showMessageDialog(this, "Conta " + tipoConta + " criada com sucesso!");
+    }
+
+    private void realizarSaque() {
+        String numeroConta = JOptionPane.showInputDialog("Digite o número da conta:");
+        ContaBancariaDTO conta = contaDAO.buscarConta(numeroConta);
+
+        if (conta != null) {
+            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a sacar:"));
+            if (conta.sacar(valor)) {
+                JOptionPane.showMessageDialog(this, "Saque realizado com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Saldo insuficiente!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Conta não encontrada!");
+        }
+    }
+
+    private void realizarDeposito() {
+        String numeroConta = JOptionPane.showInputDialog("Digite o número da conta:");
+        ContaBancariaDTO conta = contaDAO.buscarConta(numeroConta);
+
+        if (conta != null) {
+            double valor = Double.parseDouble(JOptionPane.showInputDialog("Digite o valor a depositar:"));
+            conta.depositar(valor);
+            JOptionPane.showMessageDialog(this, "Depósito realizado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Conta não encontrada!");
+        }
+    }
+
+    public static void main(String[] args) {
+        ContaBancariaDAO contaDAO = new ContaBancariaDAO();
+        new BancoView(contaDAO).setVisible(true);
+    }
+}
+
+
+# tela 
+
 
 
